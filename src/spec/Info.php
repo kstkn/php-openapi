@@ -29,7 +29,7 @@ class Info extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'title' => Type::STRING,

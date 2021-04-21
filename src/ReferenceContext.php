@@ -59,17 +59,17 @@ class ReferenceContext
      * @param ReferenceContextCache $cache cache instance for storing referenced file data.
      * @throws UnresolvableReferenceException in case an invalid or non-absolute URI is provided.
      */
-    public function __construct(?SpecObjectInterface $base, string $uri, $cache = null)
+    public function __construct(SpecObjectInterface $base = null, $uri, $cache = null)
     {
         $this->_baseSpec = $base;
         $this->_uri = $this->normalizeUri($uri);
-        $this->_cache = $cache ?? new ReferenceContextCache();
+        $this->_cache = isset($cache) ? $cache : new ReferenceContextCache();
         if ($cache === null && $base !== null) {
             $this->_cache->set($this->_uri, null, $base);
         }
     }
 
-    public function getCache(): ReferenceContextCache
+    public function getCache()
     {
         return $this->_cache;
     }
@@ -100,12 +100,12 @@ class ReferenceContext
     private function buildUri($parts)
     {
         $scheme   = !empty($parts['scheme']) ? $parts['scheme'] . '://' : '';
-        $host     = $parts['host'] ?? '';
+        $host     = isset($parts['host']) ? $parts['host'] : '';
         $port     = !empty($parts['port']) ? ':' . $parts['port'] : '';
-        $user     = $parts['user'] ?? '';
+        $user     = isset($parts['user']) ? $parts['user'] : '';
         $pass     = !empty($parts['pass']) ? ':' . $parts['pass']  : '';
         $pass     = ($user || $pass) ? "$pass@" : '';
-        $path     = $parts['path'] ?? '';
+        $path     = isset($parts['path']) ? $parts['path'] : '';
         $query    = !empty($parts['query']) ? '?' . $parts['query'] : '';
         $fragment = !empty($parts['fragment']) ? '#' . $parts['fragment'] : '';
         return "$scheme$user$pass$host$port$path$query$fragment";
@@ -149,12 +149,12 @@ class ReferenceContext
         return '';
     }
 
-    public function getBaseSpec(): ?SpecObjectInterface
+    public function getBaseSpec()
     {
         return $this->_baseSpec;
     }
 
-    public function getUri(): string
+    public function getUri()
     {
         return $this->_uri;
     }
@@ -165,7 +165,7 @@ class ReferenceContext
      * @throws UnresolvableReferenceException
      * @return string
      */
-    public function resolveRelativeUri(string $uri): string
+    public function resolveRelativeUri($uri)
     {
         $parts = parse_url($uri);
         // absolute URI, no need to combine with baseURI
@@ -191,12 +191,12 @@ class ReferenceContext
             $baseParts['path'] = $this->reduceDots($parts['path']);
         } elseif (isset($parts['path'])) {
             // relative path
-            $baseParts['path'] = $this->reduceDots(rtrim($this->dirname($baseParts['path'] ?? ''), '/') . '/' . $parts['path']);
+            $baseParts['path'] = $this->reduceDots(rtrim($this->dirname(isset($baseParts['path']) ? $baseParts['path'] : ''), '/') . '/' . $parts['path']);
         } else {
             throw new UnresolvableReferenceException("Invalid URI: '$uri'");
         }
-        $baseParts['query'] = $parts['query'] ?? null;
-        $baseParts['fragment'] = $parts['fragment'] ?? null;
+        $baseParts['query'] = isset($parts['query']) ? $parts['query'] : null;
+        $baseParts['fragment'] = isset($parts['fragment']) ? $parts['fragment'] : null;
         return $this->buildUri($baseParts);
     }
 

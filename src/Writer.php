@@ -22,7 +22,7 @@ class Writer
      * @param SpecObjectInterface|OpenApi $object the OpenApi object instance.
      * @return string JSON string.
      */
-    public static function writeToJson(SpecObjectInterface $object): string
+    public static function writeToJson(SpecObjectInterface $object)
     {
         return json_encode($object->getSerializableData(), JSON_PRETTY_PRINT);
     }
@@ -32,7 +32,7 @@ class Writer
      * @param SpecObjectInterface|OpenApi $object the OpenApi object instance.
      * @return string YAML string.
      */
-    public static function writeToYaml(SpecObjectInterface $object): string
+    public static function writeToYaml(SpecObjectInterface $object)
     {
         return Yaml::dump($object->getSerializableData(), 256, 2, Yaml::DUMP_OBJECT_AS_MAP | Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
     }
@@ -43,7 +43,7 @@ class Writer
      * @param string $fileName file name to write to.
      * @throws IOException when writing the file fails.
      */
-    public static function writeToJsonFile(SpecObjectInterface $object, string $fileName): void
+    public static function writeToJsonFile(SpecObjectInterface $object, $fileName)
     {
         if (file_put_contents($fileName, static::writeToJson($object)) === false) {
             throw new IOException("Failed to write file: '$fileName'");
@@ -56,7 +56,7 @@ class Writer
      * @param string $fileName file name to write to.
      * @throws IOException when writing the file fails.
      */
-    public static function writeToYamlFile(SpecObjectInterface $object, string $fileName): void
+    public static function writeToYamlFile(SpecObjectInterface $object, $fileName)
     {
         if (file_put_contents($fileName, static::writeToYaml($object)) === false) {
             throw new IOException("Failed to write file: '$fileName'");

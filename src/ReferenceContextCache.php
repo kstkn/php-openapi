@@ -17,7 +17,7 @@ class ReferenceContextCache
 
     public function set($ref, $type, $data)
     {
-        $this->_cache[$ref][$type ?? ''] = $data;
+        $this->_cache[$ref][isset($type) ? $type : ''] = $data;
 
         // store fallback value for resolving with unknown type
         if ($type !== null && !isset($this->_cache[$ref][''])) {
@@ -27,12 +27,12 @@ class ReferenceContextCache
 
     public function get($ref, $type)
     {
-        return $this->_cache[$ref][$type ?? ''] ?? null;
+        return isset($this->_cache[$ref][isset($type) ? $type : '']) ? $this->_cache[$ref][isset($type) ? $type : ''] : null;
     }
 
     public function has($ref, $type)
     {
         return isset($this->_cache[$ref]) &&
-            array_key_exists($type ?? '', $this->_cache[$ref]);
+            array_key_exists(isset($type) ? $type : '', $this->_cache[$ref]);
     }
 }

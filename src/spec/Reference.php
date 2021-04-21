@@ -64,7 +64,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
      * @param string $to class name of the type referenced by this Reference
      * @throws TypeErrorException in case invalid data is supplied.
      */
-    public function __construct(array $data, string $to = null)
+    public function __construct(array $data, $to = null)
     {
         if (!isset($data['$ref'])) {
             throw new TypeErrorException(
@@ -107,7 +107,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool
+    public function validate()
     {
         return empty($this->_errors);
     }
@@ -116,7 +116,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array
+    public function getErrors()
     {
         if (($pos = $this->getDocumentPosition()) !== null) {
             return array_map(function ($e) use ($pos) {
@@ -138,7 +138,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
     /**
      * @return JsonReference the JSON Reference.
      */
-    public function getJsonReference(): JsonReference
+    public function getJsonReference()
     {
         return $this->_jsonReference;
     }
@@ -154,7 +154,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
     /**
      * @return ReferenceContext
      */
-    public function getContext() : ?ReferenceContext
+    public function getContext()
     {
         return $this->_context;
     }
@@ -216,7 +216,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
             $file = $context->resolveRelativeUri($jsonReference->getDocumentUri());
             try {
                 $referencedDocument = $context->fetchReferencedFile($file);
-            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
                 $exception = new UnresolvableReferenceException(
                     "Failed to resolve Reference '$this->_ref' to $this->_to Object: " . $e->getMessage(),
                     $e->getCode(),
@@ -308,7 +308,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
                 $referencedDocument[$key] = $context->resolveRelativeUri($value);
                 $parts = explode('#', $referencedDocument[$key], 2);
                 if ($parts[0] === $oContext->getUri()) {
-                    $referencedDocument[$key] = '#' . ($parts[1] ?? '');
+                    $referencedDocument[$key] = '#' . (isset($parts[1]) ? $parts[1] : '');
                 }
                 continue;
             }
@@ -355,7 +355,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
      * @return SpecObjectInterface|null returns the base document where this object is located in.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getBaseDocument(): ?SpecObjectInterface
+    public function getBaseDocument()
     {
         return $this->_baseDocument;
     }
@@ -364,7 +364,7 @@ class Reference implements SpecObjectInterface, DocumentContextInterface
      * @return JsonPointer|null returns a JSON pointer describing the position of this object in the base document.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getDocumentPosition(): ?JsonPointer
+    public function getDocumentPosition()
     {
         return $this->_jsonPointer;
     }

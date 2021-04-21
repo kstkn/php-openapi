@@ -36,7 +36,7 @@ class Parameter extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'name' => Type::STRING,
@@ -62,7 +62,7 @@ class Parameter extends SpecBaseObject
     /**
      * @return array array of attributes default values.
      */
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return $this->_attributeDefaults;
     }

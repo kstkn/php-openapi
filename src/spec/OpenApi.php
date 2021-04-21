@@ -30,7 +30,7 @@ class OpenApi extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'openapi' => Type::STRING,
@@ -47,7 +47,7 @@ class OpenApi extends SpecBaseObject
     /**
      * @return array array of attributes default values.
      */
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return [
             // Spec: If the servers property is not provided, or is an empty array,

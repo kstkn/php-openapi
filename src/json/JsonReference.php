@@ -36,7 +36,7 @@ final class JsonReference implements JsonSerializable
      * @throws MalformedJsonReferenceObjectException
      * @throws InvalidJsonPointerSyntaxException if an invalid JSON pointer string is passed as part of the fragment section.
      */
-    public static function createFromJson(string $json): JsonReference
+    public static function createFromJson($json)
     {
         $refObject = json_decode($json, true);
         if (!isset($refObject['$ref'])) {
@@ -53,7 +53,7 @@ final class JsonReference implements JsonSerializable
      * @param JsonPointer $jsonPointer
      * @return JsonReference
      */
-    public static function createFromUri(string $uri, ?JsonPointer $jsonPointer = null): JsonReference
+    public static function createFromUri($uri, JsonPointer $jsonPointer = null)
     {
         $jsonReference = static::createFromReference($uri);
         $jsonReference->_pointer = $jsonPointer ?: new JsonPointer('');
@@ -66,7 +66,7 @@ final class JsonReference implements JsonSerializable
      * @return JsonReference
      * @throws InvalidJsonPointerSyntaxException if an invalid JSON pointer string is passed as part of the fragment section.
      */
-    public static function createFromReference(string $referenceURI): JsonReference
+    public static function createFromReference($referenceURI)
     {
         $jsonReference = new JsonReference();
         if (strpos($referenceURI, '#') !== false) {
@@ -90,7 +90,7 @@ final class JsonReference implements JsonSerializable
     }
 
 
-    public function getJsonPointer(): JsonPointer
+    public function getJsonPointer()
     {
         return $this->_pointer;
     }
@@ -98,7 +98,7 @@ final class JsonReference implements JsonSerializable
     /**
      * @return string returns the URI of the referenced JSON document without the fragment (JSON Pointer) part.
      */
-    public function getDocumentUri(): string
+    public function getDocumentUri()
     {
         return $this->_uri;
     }
@@ -106,7 +106,7 @@ final class JsonReference implements JsonSerializable
     /**
      * @return string returns the JSON Pointer in URI format.
      */
-    public function getReference(): string
+    public function getReference()
     {
         // https://tools.ietf.org/html/rfc6901#section-6
         // A JSON Pointer can be represented in a URI fragment identifier by

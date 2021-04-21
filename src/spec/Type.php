@@ -20,7 +20,7 @@ class Type
     const STRING = 'string';
     const BOOLEAN = 'boolean';
     const OBJECT = 'object';
-    const ARRAY = 'array';
+    const ARR = 'array';
 
     /**
      * Indicate whether a type is a scalar type, i.e. not an array or object.
@@ -31,7 +31,7 @@ class Type
      * @return bool whether the type is a scalar type.
      * @since 1.2.1
      */
-    public static function isScalar(string $type): bool
+    public static function isScalar($type)
     {
         return in_array($type, [
             self::INTEGER,

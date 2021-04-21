@@ -79,7 +79,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
     /**
      * @param string $url
      */
-    public function setUrl(string $url): void
+    public function setUrl($url)
     {
         $this->_url = $url;
     }
@@ -87,7 +87,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
     /**
      * @return PathItem
      */
-    public function getRequest(): ?PathItem
+    public function getRequest()
     {
         return $this->_pathItem;
     }
@@ -95,7 +95,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
     /**
      * @param PathItem $request
      */
-    public function setRequest(?PathItem $request): void
+    public function setRequest(PathItem $request = null)
     {
         $this->_pathItem = $request;
     }
@@ -105,7 +105,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool
+    public function validate()
     {
         $pathItemValid = $this->_pathItem === null || $this->_pathItem->validate();
         return $pathItemValid && empty($this->_errors);
@@ -115,7 +115,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array
+    public function getErrors()
     {
         if (($pos = $this->getDocumentPosition()) !== null) {
             $errors = array_map(function ($e) use ($pos) {
@@ -172,7 +172,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
      * @return SpecObjectInterface|null returns the base document where this object is located in.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getBaseDocument(): ?SpecObjectInterface
+    public function getBaseDocument()
     {
         return $this->_baseDocument;
     }
@@ -181,7 +181,7 @@ class Callback implements SpecObjectInterface, DocumentContextInterface
      * @return JsonPointer|null returns a JSON pointer describing the position of this object in the base document.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getDocumentPosition(): ?JsonPointer
+    public function getDocumentPosition()
     {
         return $this->_jsonPointer;
     }

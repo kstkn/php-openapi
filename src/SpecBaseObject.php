@@ -39,12 +39,12 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
     /**
      * @return array array of attributes available in this object.
      */
-    abstract protected function attributes(): array;
+    abstract protected function attributes();
 
     /**
      * @return array array of attributes default values.
      */
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return [];
     }
@@ -164,7 +164,7 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
         }
         try {
             return new $type($data);
-        } catch (\TypeError $e) {
+        } catch (\Exception $e) {
             throw new TypeErrorException(
                 "Unable to instantiate {$type} Object with data '" . print_r($data, true) . "' at " . $this->getDocumentPosition(),
                 $e->getCode(),
@@ -216,7 +216,7 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool
+    public function validate()
     {
         // avoid recursion to get stuck in a loop
         if ($this->_recursingValidate) {
@@ -254,7 +254,7 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array
+    public function getErrors()
     {
         // avoid recursion to get stuck in a loop
         if ($this->_recursingErrors) {
@@ -285,19 +285,23 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
 
         $this->_recursingErrors = false;
 
-        return array_merge(...$errors);
+        $result = [];
+        foreach ($errors as $array) {
+            $result = array_merge($result, $array);
+        }
+        return $result;
     }
 
     /**
      * @param string $error error message to add.
      */
-    protected function addError(string $error, $class = '')
+    protected function addError($error, $class = '')
     {
         $shortName = explode('\\', $class);
         $this->_errors[] = end($shortName).$error;
     }
 
-    protected function hasProperty(string $name): bool
+    protected function hasProperty($name)
     {
         return isset($this->_properties[$name]) || isset($this->attributes()[$name]);
     }
@@ -311,14 +315,14 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
         }
     }
 
-    protected function validateEmail(string $property)
+    protected function validateEmail($property)
     {
         if (!empty($this->$property) && strpos($this->$property, '@') === false) {
             $this->addError('::$'.$property.' does not seem to be a valid email address: ' . $this->$property, get_class($this));
         }
     }
 
-    protected function validateUrl(string $property)
+    protected function validateUrl($property)
     {
         if (!empty($this->$property) && strpos($this->$property, '//') === false) {
             $this->addError('::$'.$property.' does not seem to be a valid URL: ' . $this->$property, get_class($this));
@@ -471,7 +475,7 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
      * @return SpecObjectInterface|null returns the base document where this object is located in.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getBaseDocument(): ?SpecObjectInterface
+    public function getBaseDocument()
     {
         return $this->_baseDocument;
     }
@@ -480,7 +484,7 @@ abstract class SpecBaseObject implements SpecObjectInterface, DocumentContextInt
      * @return JsonPointer|null returns a JSON pointer describing the position of this object in the base document.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getDocumentPosition(): ?JsonPointer
+    public function getDocumentPosition()
     {
         return $this->_jsonPointer;
     }

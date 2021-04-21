@@ -29,7 +29,7 @@ final class JsonPointer
      * Must be either an empty string (for referencing the whole document), or a string starting with `/`.
      * @throws InvalidJsonPointerSyntaxException in case an invalid JSON pointer string is passed
      */
-    public function __construct(string $pointer)
+    public function __construct($pointer)
     {
         if (!preg_match('~^(/[^/]*)*$~', $pointer)) {
             throw new InvalidJsonPointerSyntaxException("Invalid JSON Pointer syntax: $pointer");
@@ -45,7 +45,7 @@ final class JsonPointer
     /**
      * @return string returns the JSON Pointer.
      */
-    public function getPointer(): string
+    public function getPointer()
     {
         return $this->_pointer;
     }
@@ -53,7 +53,7 @@ final class JsonPointer
     /**
      * @return array the JSON pointer path as array.
      */
-    public function getPath(): array
+    public function getPath()
     {
         if ($this->_pointer === '') {
             return [];
@@ -67,7 +67,7 @@ final class JsonPointer
      * @param string $subpath the path element to append.
      * @return JsonPointer a new JSON pointer pointing to the subpath.
      */
-    public function append(string $subpath): JsonPointer
+    public function append($subpath)
     {
         return new JsonPointer($this->_pointer . '/' . static::encode($subpath));
     }
@@ -77,7 +77,7 @@ final class JsonPointer
      * @return JsonPointer|null a new JSON pointer pointing to the parent element
      * or null if this pointer already points to the document root.
      */
-    public function parent(): ?JsonPointer
+    public function parent()
     {
         $path = $this->getPath();
         if (empty($path)) {
@@ -147,7 +147,7 @@ final class JsonPointer
     /**
      * Encodes a string for use inside of a JSON pointer.
      */
-    public static function encode(string $string): string
+    public static function encode($string)
     {
         return strtr($string, [
             '~' => '~0',
@@ -158,7 +158,7 @@ final class JsonPointer
     /**
      * Decodes a string used inside of a JSON pointer.
      */
-    public static function decode(string $string): string
+    public static function decode($string)
     {
         return strtr($string, [
             '~1' => '/',

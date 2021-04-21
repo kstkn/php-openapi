@@ -89,7 +89,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @param string $name path name
      * @return bool
      */
-    public function hasPath(string $name): bool
+    public function hasPath($name)
     {
         return isset($this->_paths[$name]);
     }
@@ -98,16 +98,16 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @param string $name path name
      * @return PathItem
      */
-    public function getPath(string $name): ?PathItem
+    public function getPath($name)
     {
-        return $this->_paths[$name] ?? null;
+        return isset($this->_paths[$name]) ? $this->_paths[$name] : null;
     }
 
     /**
      * @param string $name path name
      * @param PathItem $pathItem the path item to add
      */
-    public function addPath(string $name, PathItem $pathItem): void
+    public function addPath($name, PathItem $pathItem)
     {
         $this->_paths[$name] = $pathItem;
     }
@@ -115,7 +115,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
     /**
      * @param string $name path name
      */
-    public function removePath(string $name): void
+    public function removePath($name)
     {
         unset($this->_paths[$name]);
     }
@@ -123,7 +123,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
     /**
      * @return PathItem[]
      */
-    public function getPaths(): array
+    public function getPaths()
     {
         return $this->_paths;
     }
@@ -133,7 +133,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool
+    public function validate()
     {
         $valid = true;
         $this->_errors = [];
@@ -155,7 +155,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array
+    public function getErrors()
     {
         if (($pos = $this->getDocumentPosition()) !== null) {
             $errors = [
@@ -173,7 +173,12 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
             }
             $errors[] = $path->getErrors();
         }
-        return array_merge(...$errors);
+
+        $result = [];
+        foreach ($errors as $array) {
+            $result = array_merge($result, $array);
+        }
+        return $result;
     }
 
     /**
@@ -292,7 +297,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @return SpecObjectInterface|null returns the base document where this object is located in.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getBaseDocument(): ?SpecObjectInterface
+    public function getBaseDocument()
     {
         return $this->_baseDocument;
     }
@@ -301,7 +306,7 @@ class Paths implements SpecObjectInterface, DocumentContextInterface, ArrayAcces
      * @return JsonPointer|null returns a JSON pointer describing the position of this object in the base document.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getDocumentPosition(): ?JsonPointer
+    public function getDocumentPosition()
     {
         return $this->_jsonPointer;
     }

@@ -23,7 +23,7 @@ class ExternalDocumentation extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'description' => Type::STRING,

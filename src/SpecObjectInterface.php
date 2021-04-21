@@ -29,13 +29,13 @@ interface SpecObjectInterface
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool;
+    public function validate();
 
     /**
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array;
+    public function getErrors();
 
     /**
      * Resolves all Reference Objects in this object and replaces them with their resolution.

@@ -25,7 +25,7 @@ class MediaType extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'schema' => Schema::class,
@@ -43,7 +43,7 @@ class MediaType extends SpecBaseObject
     public function __construct(array $data)
     {
         // instantiate Encoding by passing the schema for extracting default values
-        $encoding = $data['encoding'] ?? null;
+        $encoding = isset($data['encoding']) ? $data['encoding'] : null;
         unset($data['encoding']);
 
         parent::__construct($data);
@@ -53,7 +53,7 @@ class MediaType extends SpecBaseObject
                 if ($encodingData instanceof Encoding) {
                     $encoding[$property] = $encodingData;
                 } elseif (is_array($encodingData)) {
-                    $schema = $this->schema->properties[$property] ?? null;
+                    $schema = isset($this->schema->properties[$property]) ? $this->schema->properties[$property] : null;
                     // Don't pass the schema if it's still an unresolved reference.
                     if ($schema instanceof Reference) {
                         $encoding[$property] = new Encoding($encodingData);

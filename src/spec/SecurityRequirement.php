@@ -20,7 +20,7 @@ class SecurityRequirement extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         // this object does not have a fixed set of attribute names
         return [];

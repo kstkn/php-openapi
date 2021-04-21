@@ -27,7 +27,7 @@ class Encoding extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'contentType' => Type::STRING,
@@ -45,7 +45,7 @@ class Encoding extends SpecBaseObject
     /**
      * @return array array of attributes default values.
      */
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return $this->_attributeDefaults;
     }
@@ -53,9 +53,10 @@ class Encoding extends SpecBaseObject
     /**
      * Create an object from spec data.
      * @param array $data spec data read from YAML or JSON
+     * @param Schema|null $schema
      * @throws TypeErrorException in case invalid data is supplied.
      */
-    public function __construct(array $data, ?Schema $schema = null)
+    public function __construct(array $data, Schema $schema = null)
     {
         if (isset($data['style'])) {
             // Spec: When style is form, the default value is true.
@@ -67,7 +68,7 @@ class Encoding extends SpecBaseObject
             // for other primitive types – text/plain;
             // for object - application/json;
             // for array – the default is defined based on the inner type.
-            switch ($schema->type === 'array' ? ($schema->items->type ?? 'array') : $schema->type) {
+            switch ($schema->type === 'array' ? (isset($schema->items->type) ? $schema->items->type : 'array') : $schema->type) {
                 case Type::STRING:
                     if ($schema->format === 'binary') {
                         $this->_attributeDefaults['contentType'] = 'application/octet-stream';

@@ -67,7 +67,7 @@ class Schema extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             // The following properties are taken directly from the JSON Schema definition and follow the same specifications:
@@ -115,7 +115,7 @@ class Schema extends SpecBaseObject
     /**
      * @return array array of attributes default values.
      */
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return [
             'additionalProperties' => true,

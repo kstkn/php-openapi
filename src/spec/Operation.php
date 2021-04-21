@@ -33,7 +33,7 @@ class Operation extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'tags' => [Type::STRING],
@@ -51,7 +51,7 @@ class Operation extends SpecBaseObject
         ];
     }
 
-    protected function attributeDefaults(): array
+    protected function attributeDefaults()
     {
         return [
             'security' => null,

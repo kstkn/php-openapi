@@ -83,7 +83,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      * @param string $statusCode HTTP status code
      * @return bool
      */
-    public function hasResponse($statusCode): bool
+    public function hasResponse($statusCode)
     {
         return isset($this->_responses[$statusCode]);
     }
@@ -94,14 +94,14 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      */
     public function getResponse($statusCode)
     {
-        return $this->_responses[$statusCode] ?? null;
+        return isset($this->_responses[$statusCode]) ? $this->_responses[$statusCode] : null;
     }
 
     /**
      * @param string $statusCode HTTP status code
      * @param Response|Reference $response
      */
-    public function addResponse($statusCode, $response): void
+    public function addResponse($statusCode, $response)
     {
         $this->_responses[$statusCode] = $response;
     }
@@ -117,7 +117,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
     /**
      * @return (Response|Reference|null)[]
      */
-    public function getResponses(): array
+    public function getResponses()
     {
         return $this->_responses;
     }
@@ -127,7 +127,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      * @return bool whether the loaded data is valid according to OpenAPI spec
      * @see getErrors()
      */
-    public function validate(): bool
+    public function validate()
     {
         $valid = true;
         foreach ($this->_responses as $key => $response) {
@@ -145,7 +145,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      * @return string[] list of validation errors according to OpenAPI spec.
      * @see validate()
      */
-    public function getErrors(): array
+    public function getErrors()
     {
         if (($pos = $this->getDocumentPosition()) !== null) {
             $errors = [
@@ -163,7 +163,12 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
             }
             $errors[] = $response->getErrors();
         }
-        return array_merge(...$errors);
+
+        $result = [];
+        foreach ($errors as $array) {
+            $result = array_merge($result, $array);
+        }
+        return $result;
     }
 
     /**
@@ -289,7 +294,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      * @return SpecObjectInterface|null returns the base document where this object is located in.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getBaseDocument(): ?SpecObjectInterface
+    public function getBaseDocument()
     {
         return $this->_baseDocument;
     }
@@ -298,7 +303,7 @@ class Responses implements SpecObjectInterface, DocumentContextInterface, ArrayA
      * @return JsonPointer|null returns a JSON pointer describing the position of this object in the base document.
      * Returns `null` if no context information was provided by [[setDocumentContext]].
      */
-    public function getDocumentPosition(): ?JsonPointer
+    public function getDocumentPosition()
     {
         return $this->_jsonPointer;
     }

@@ -45,7 +45,7 @@ class PathItem extends SpecBaseObject
     /**
      * @return array array of attributes available in this object.
      */
-    protected function attributes(): array
+    protected function attributes()
     {
         return [
             'summary' => Type::STRING,
@@ -130,7 +130,7 @@ class PathItem extends SpecBaseObject
      * In this case the behavior is *undefined*.
      * @return Reference|null
      */
-    public function getReference(): ?Reference
+    public function getReference()
     {
         return $this->_ref;
     }
